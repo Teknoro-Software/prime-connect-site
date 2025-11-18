@@ -21,9 +21,7 @@ export default function ContactSection() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
 
-  
-  const SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycby1u06dR8CavQn0RJ73-kwnllJhKzPNpJHK2bvEX4CB3SOxaeVD-vo7ky4XiVGnffnC/exec";
+  const SCRIPT_URL = "/api/contact";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,40 +36,33 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setSuccess(null);
 
     try {
-      const response = await fetch(SCRIPT_URL, {
-        redirect: "follow",
+      const response = await fetch("/api/contact", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        },
       });
 
-      const resultText = await response.text();
-      const result = JSON.parse(resultText);
+      const result = await response.json();
 
-      if (response.ok && result.status === "success") {
+      if (response.ok) {
         setSuccess("Message sent successfully ✨");
       } else {
-        console.error("Form submission error:", result.message);
+        console.error("Error:", result);
       }
-    } catch (error) {
-      console.error("Submission failed:", error);
+    } catch (err) {
+      console.error("Network error:", err);
     } finally {
-      setFormData({ name: "", email: "", mobile: "", message: "" });
       setLoading(false);
+      setFormData({ name: "", email: "", mobile: "", message: "" });
     }
   };
 
   return (
-    <section
-      id="contact"
-      className="py-20 px-6 bg-white"
-    >
+    <section id="contact" className="py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-
         {/* LEFT CONTENT */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -95,7 +86,6 @@ export default function ContactSection() {
           </p>
 
           <div className="grid sm:grid-cols-2 gap-6 mt-12">
-
             {/* Card 1 */}
             <motion.div
               className="bg-white shadow-md rounded-xl p-6 border border-primary/10"
