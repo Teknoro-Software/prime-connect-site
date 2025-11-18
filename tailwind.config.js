@@ -17,7 +17,7 @@ module.exports = {
         accentDark: "#D94A1F",
       },
       fontFamily: {
-        heading: ["Playfair Display", "serif"],
+        heading: ["Poppins", "sans-serif"],
         sans: ["Inter", "ui-sans-serif", "system-ui"]
       }
     }
