@@ -18,6 +18,7 @@ import ContactSection from "../components/ContactSection";
 import Process from "../components/ProcessSection";
 import { Mail, MapPin, PhoneCall, Menu, X } from "lucide-react";
 import Loader from "../components/Loader";
+import Industries from "../components/Industries";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -614,64 +615,64 @@ function Why() {
   );
 }
 
-function Industries() {
-  const items = [
-    "IT",
-    "Manufacturing",
-    "Retail",
-    "Healthcare",
-    "Logistics",
-    "BFSI",
-  ];
-  return (
-    <section id="industries" className="py-20">
-      <div className="container">
-        <motion.h3
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold text-center text-primary"
-        >
-          Industries we serve
-        </motion.h3>
-        <p className="text-neutral/70 mt-3 text-center max-w-2xl mx-auto">
-          Domain-aware HR programs for every sector.
-        </p>
+// function Industries() {
+//   const items = [
+//     "IT",
+//     "Manufacturing",
+//     "Retail",
+//     "Healthcare",
+//     "Logistics",
+//     "BFSI",
+//   ];
+//   return (
+//     <section id="industries" className="py-20">
+//       <div className="container">
+//         <motion.h3
+//           initial={{ opacity: 0, y: 24 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           className="text-3xl font-bold text-center text-primary"
+//         >
+//           Industries we serve
+//         </motion.h3>
+//         <p className="text-neutral/70 mt-3 text-center max-w-2xl mx-auto">
+//           Domain-aware HR programs for every sector.
+//         </p>
 
-        <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {items.map((it, i) => (
-            <motion.div
-              key={it}
-              className="
-        p-6 rounded-2xl bg-white 
-        shadow-md 
-        border border-neutral/10
-        hover:shadow-xl 
-        transition-all duration-300
-      "
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -6 }}
-            >
-              <motion.div
-                className="h-1 w-10 bg-gradient-to-r from-[#D94A1F] to-[#F2C17A] rounded-full mb-4"
-                initial={{ width: 0 }}
-                whileInView={{ width: 40 }}
-                transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
-              />
+//         <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+//           {items.map((it, i) => (
+//             <motion.div
+//               key={it}
+//               className="
+//         p-6 rounded-2xl bg-white
+//         shadow-md
+//         border border-neutral/10
+//         hover:shadow-xl
+//         transition-all duration-300
+//       "
+//               initial={{ opacity: 0, y: 8 }}
+//               whileInView={{ opacity: 1, y: 0 }}
+//               transition={{ delay: i * 0.08 }}
+//               whileHover={{ y: -6 }}
+//             >
+//               <motion.div
+//                 className="h-1 w-10 bg-gradient-to-r from-[#D94A1F] to-[#F2C17A] rounded-full mb-4"
+//                 initial={{ width: 0 }}
+//                 whileInView={{ width: 40 }}
+//                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+//               />
 
-              <div className="text-lg font-semibold text-primary">{it}</div>
+//               <div className="text-lg font-semibold text-primary">{it}</div>
 
-              <p className="text-neutral/70 mt-2 text-sm">
-                Tailored HR programs & compliance frameworks.
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+//               <p className="text-neutral/70 mt-2 text-sm">
+//                 Tailored HR programs & compliance frameworks.
+//               </p>
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 
 function Services() {
   const services = [

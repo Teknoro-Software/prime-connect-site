@@ -8,9 +8,8 @@ export async function POST(req: Request) {
   try {
     const { name, email, mobile, message } = await req.json();
 
-    // COMPANY EMAIL (Titan Mail)
     await resend.emails.send({
-      from: "Prime Connect HR <no-reply@primeconnecthr.com>",   // ✅ FIXED
+      from: "Prime Connect HR <no-reply@primeconnecthr.com>",   
       to: ["info@primeconnecthr.com"],
       subject: "New Contact Form Submission",
       html: `
@@ -22,9 +21,8 @@ export async function POST(req: Request) {
       `,
     });
 
-    // AUTO REPLY TO USER
     await resend.emails.send({
-      from: "Prime Connect HR <no-reply@primeconnecthr.com>",   // ✅ FIXED
+      from: "Prime Connect HR <no-reply@primeconnecthr.com>",   
       to: email,
       subject: "We Received Your Message ✔",
       html: `
