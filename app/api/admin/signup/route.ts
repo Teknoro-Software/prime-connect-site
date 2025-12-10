@@ -1,20 +1,31 @@
 // app/api/admin/signup/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "../../../../lib/mongo";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
-if (!JWT_SECRET) throw new Error("JWT_SECRET missing");
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    const JWT_SECRET = process.env.JWT_SECRET;
+
+    // IMPORTANT — Never validate env vars at the top level in Next.js 16
+    if (!JWT_SECRET) {
+      console.error("JWT_SECRET missing");
+      return NextResponse.json(
+        { error: "Server misconfigured" },
+        { status: 500 }
+      );
+    }
+
     const body = await req.json();
     const { email, password } = body;
 
     // Validate input
     if (!email || !password) {
-      return NextResponse.json({ error: "Missing credentials" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing credentials" },
+        { status: 400 }
+      );
     }
 
     const db = await getDb();
@@ -23,9 +34,12 @@ export async function POST(req: Request) {
     // Check if admin already exists
     const existing = await admins.findOne({ email });
     if (existing) {
-      return NextResponse.json({ error: "User already exists" }, { status: 409 });
+      return NextResponse.json(
+        { error: "User already exists" },
+        { status: 409 }
+      );
     }
-    
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -38,7 +52,10 @@ export async function POST(req: Request) {
 
     // Create JWT token
     const token = jwt.sign(
-      { id: result.insertedId, email },
+      {
+        id: result.insertedId.toString(),  // ensure string shape
+        email,
+      },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -55,6 +72,9 @@ export async function POST(req: Request) {
     return res;
   } catch (err) {
     console.error("Signup error:", err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Server error" },
+      { status: 500 }
+    );
   }
 }
