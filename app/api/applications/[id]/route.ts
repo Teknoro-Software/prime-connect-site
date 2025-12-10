@@ -1,16 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getBucket } from "../../../../lib/mongo";
 import { ObjectId } from "mongodb";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { resumeId: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }   // ⭐ FIXED — params is a Promise
 ) {
   try {
-    const bucket = getBucket();
-    const downloadStream = bucket.openDownloadStream(new ObjectId(params.resumeId));
+    const { id } = await context.params;         // ⭐ FIXED — must await params
 
-    // Convert Mongo GridFS stream → Web ReadableStream
+    const bucket = getBucket();
+    const downloadStream = bucket.openDownloadStream(new ObjectId(id));
+
     const stream = new ReadableStream({
       start(controller) {
         downloadStream.on("data", (chunk) => controller.enqueue(chunk));
