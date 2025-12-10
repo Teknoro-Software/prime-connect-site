@@ -265,33 +265,43 @@ function NavBar() {
       </NavbarBrand>
 
       <NavbarContent className="hidden md:flex gap-6" justify="end">
-        {["Home", "Why", "Industries", "Services", "Process", "FAQ"].map(
-          (t) => (
+        {[
+          "Home",
+          "Why",
+          "Industries",
+          "Services",
+          "Careers",
+          "Process",
+          "FAQ",
+        ].map((t) => {
+          const isCareers = t === "Careers";
+
+          return (
             <NavbarItem key={t}>
               <motion.a
-                href={`#${t.toLowerCase()}`}
+                href={isCareers ? "/careers" : `#${t.toLowerCase()}`}
                 className="
-                  text-neutral/70 
-                  font-medium 
-                  relative
-                  transition
-                "
+            text-neutral/70 
+            font-medium 
+            relative
+            transition
+          "
                 whileHover={{ y: -2 }}
               >
                 {t}
                 <span
                   className="
-                    absolute left-0 -bottom-1 
-                    h-[2px] w-0 
-                    bg-gradient-to-r from-[#F36B21] to-[#c24d12]
-                    transition-all duration-300 
-                    hover:w-full
-                  "
+              absolute left-0 -bottom-1 
+              h-[2px] w-0 
+              bg-gradient-to-r from-[#F36B21] to-[#c24d12]
+              transition-all duration-300 
+              hover:w-full
+            "
                 />
               </motion.a>
             </NavbarItem>
-          )
-        )}
+          );
+        })}
 
         <NavbarItem>
           <Button
@@ -317,23 +327,29 @@ function NavBar() {
       </NavbarContent>
 
       <NavbarMenu className="backdrop-blur-2xl bg-white/70 shadow-xl">
-        {["Home", "Why", "Industries", "Services", "Process", "FAQ"].map(
-          (item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <a
-                href={`#${item.toLowerCase()}`}
-                className="
+        {[
+          "Home",
+          "Why",
+          "Industries",
+          "Services",
+          "Careers",
+          "Process",
+          "FAQ",
+        ].map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <a
+              href={item === "Careers" ? "/careers" : `#${item.toLowerCase()}`}
+              className="
                   block py-3 px-2 
                   text-lg font-medium text-neutral-700 
                   hover:text-primary 
                   transition
                 "
-              >
-                {item}
-              </a>
-            </NavbarMenuItem>
-          )
-        )}
+            >
+              {item}
+            </a>
+          </NavbarMenuItem>
+        ))}
 
         <NavbarMenuItem className="mt-4">
           <Button
