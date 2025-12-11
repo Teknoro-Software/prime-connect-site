@@ -239,9 +239,31 @@ function ApplicationsTab() {
     async function load() {
       const res = await fetch("/api/applications", { credentials: "include" });
       const data = await res.json();
-      setApps(data || []);
+
+      // Fetch job names for each application
+      const enriched = await Promise.all(
+        data.map(async (app: any) => {
+          if (!app.jobId) return { ...app, jobTitle: "Unknown" };
+
+          // Fetch job details
+          try {
+            const jobRes = await fetch(`/api/jobs?id=${app.jobId}`);
+            const jobData = await jobRes.json();
+
+            return {
+              ...app,
+              jobTitle: jobData?.job?.title || "Unknown",
+            };
+          } catch {
+            return { ...app, jobTitle: "Unknown" };
+          }
+        })
+      );
+
+      setApps(enriched);
       setLoading(false);
     }
+
     load();
   }, []);
 
@@ -250,9 +272,7 @@ function ApplicationsTab() {
   return (
     <div>
       {apps.length === 0 ? (
-        <div className="p-6 text-center text-neutral/60">
-          No applications yet.
-        </div>
+        <div className="p-6 text-center text-neutral/60">No applications yet.</div>
       ) : (
         <div className="space-y-3">
           {apps.map((a) => (
@@ -264,8 +284,8 @@ function ApplicationsTab() {
                 <div className="font-semibold text-primary">
                   {a.name} <span className="text-sm">({a.email})</span>
                 </div>
-                <p className="text-sm text-neutral-60">
-                  {a.phone} · applied to {a.jobId || "Unknown"}
+                <p className="text-sm text-neutral-600">
+                  {a.phone} · applied to <b>{a.jobTitle}</b>
                 </p>
               </div>
 
@@ -283,6 +303,7 @@ function ApplicationsTab() {
     </div>
   );
 }
+
 
 /* ============================================================
    MAIN DASHBOARD WITH AUTH + MOBILE RESPONSIVE

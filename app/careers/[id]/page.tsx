@@ -120,6 +120,8 @@ export default function JobPage(props: any) {
               </div>
             )}
 
+            <input type="hidden" name="jobId" value={job._id} />
+
             {/* Name */}
             <div className="relative">
               <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/70" />
@@ -154,7 +156,7 @@ export default function JobPage(props: any) {
               />
             </div>
 
-            {/* Resume Upload */}
+            {/* Resume */}
             <div className="relative border-2 border-dashed p-5 rounded-xl hover:border-primary transition">
               <label className="flex items-center gap-3 cursor-pointer">
                 <FaFileUpload className="text-primary text-2xl" />
